@@ -1,10 +1,11 @@
-const Nasdaq = require('./crawlers/nasdaq')
+// const M = require('./models/nasdaqTimeData');
 
-async function test() {
-    let nasdaq = new Nasdaq();
-    let data = await nasdaq.scrape();
+// async function test() {
+//     let data = await M.find();
 
-    console.log(data);
-}
+//     console.log(data);
+// }
 
-test();
+// test();
+
+// console.log('test');

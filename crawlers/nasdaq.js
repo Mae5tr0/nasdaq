@@ -3,7 +3,7 @@ const request = require('request-promise-native');
 const cheerio = require('cheerio');
 
 class Nasdaq {
-    scrape() {
+    static scrape() {
         return request('http://www.nasdaq.com')
             .then((body) => this.parse(body))
             .catch(function(err) {
@@ -11,7 +11,7 @@ class Nasdaq {
             })
     }
 
-    parse(body) {        
+    static parse(body) {        
         let $ = cheerio.load(body);
         let scriptContent = $('#HomeIndexTable script').html();
         let nasdaqDataRaw = scriptContent.split('storeIndexInfo(')[1].split(',');

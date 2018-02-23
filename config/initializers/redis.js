@@ -9,7 +9,7 @@ const client = redis.createClient({
 });
 
 client.on("error", function errorLogger(err) {
-    logger.error(`nasdaq.js: ${err}`);
+    logger.error(err);
 });
 
 module.exports = client;

@@ -1,4 +1,4 @@
-require('../config');
+require('../environment');
 const winston = require('winston');
 
 module.exports = winston.createLogger({

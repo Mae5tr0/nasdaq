@@ -14,7 +14,7 @@ router.get('/markets', function (req, res) {
 router.get('/markets/:id', async function (req, res) {
     //TODO 404 if not support market
     let data = await TimeData.find(req.params.id, {from: req.params.from, to: req.params.to});
-    res.json(data);
+    res.json({data: data});
 });
 
 module.exports = router;

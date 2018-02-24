@@ -18,6 +18,10 @@ afterEach(() => {
     redis.flushdb();
 });
 
+afterAll(async () => {
+    redis.quit();
+});
+
 describe('Time Data', () => {
     test('correct save and extract data from redis', async () => {
         await TimeData.create('market', storedData1);

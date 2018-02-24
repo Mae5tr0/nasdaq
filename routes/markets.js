@@ -8,7 +8,7 @@ const SUPPORTED_MARKETS = ['nasdaq'];
 router.get('/markets', function (req, res) {    
     res.json({
         data: SUPPORTED_MARKETS            
-    })
+    });
 });
 
 router.get('/markets/:id', async function (req, res) {

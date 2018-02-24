@@ -1,28 +1,30 @@
 {
   "name": "nasdaq",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "Test assignment",
+  "main": "app.js",
   "scripts": {
-    "api": "node apps/api/app",
-    "crawler": "node apps/crawlers/nasdaq",
-    "test": "ENVIRONMENT=test jest"
+    "api": "node app",
+    "crawler": "node services/crawler",
+    "test": "NODE_ENV=test jest"
   },
-  "author": "",
+  "author": "Kirill Sapozhnikov",
   "license": "ISC",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
     "dotenv": "^5.0.0",
     "express": "^4.16.2",
-    "gulp": "^3.9.1",
+    "morgan": "^1.9.0",
     "redis": "^2.8.0",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
-    "waterline": "^0.13.1",
     "winston": "^3.0.0-rc1"
   },
   "devDependencies": {
-    "faker": "^4.1.0",
     "jest": "^22.4.2",
     "nock": "^9.1.9"
+  },
+  "jest": {
+    "verbose": true
   }
 }

@@ -1,6 +1,6 @@
-const logger = require('../config/initializers/logger');
-const request = require('request-promise-native');
-const cheerio = require('cheerio');
+const logger = require('../config/initializers/logger'),
+    request = require('request-promise-native'),
+    cheerio = require('cheerio');
 
 class Nasdaq {
     static scrape() {
@@ -11,6 +11,7 @@ class Nasdaq {
             })
     }
 
+    
     static parse(body) {        
         let $ = cheerio.load(body);
         let scriptContent = $('#HomeIndexTable script').html();

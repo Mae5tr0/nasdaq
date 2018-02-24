@@ -1,11 +1,22 @@
-// const M = require('./models/nasdaqTimeData');
+const express = require('express'),
+    logger = require('./config/initializers/logger'),
+    morgan = require('morgan');
 
-// async function test() {
-//     let data = await M.find();
+const app = express();
 
-//     console.log(data);
-// }
+app.use(morgan('combined'));
 
-// test();
+app.use('/', require('./routes/markets'));
 
-// console.log('test');
+const port = process.env.EXPRESS_PORT || 3000,
+    ip = process.env.EXPRESS_IP || '127.0.0.1';
+    
+app.listen(port, ip, function (error) {
+    if (error) {
+        logger.error('Unable to listen for connections', error)
+        process.exit(10)
+    }
+    logger.info(`Server is listening on http://${ip}:${port}`);
+});
+
+module.exports = app;

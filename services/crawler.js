@@ -1,10 +1,10 @@
-const config = require('../config/environment'),
-      logger = require('../config/initializers/logger'),
+const config = require('../config'),
+      logger = require('../initializers/logger'),
       Nasdaq = require('../libs/nasdaq'),
       TimeData = require('../models/timeData');
 
 setInterval(async function() {
-    logger.debug("Scrape nasdaq");
+    logger.debug("Start fetching data from nasdaq");
     //TODO: we need use timestamp accordinly to seconds
     let timestamp = Date.now();
     
@@ -14,4 +14,4 @@ setInterval(async function() {
         value: data.value,
         change: data.change
     });
-}, process.env.FETCH_INTERVAL * 1000);
+}, config.service.crawler.timeout * 1000);

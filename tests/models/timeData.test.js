@@ -1,4 +1,4 @@
-require('../../config/environment');
+require('../support');
 
 const nock = require('nock'),
     Nasdaq = require('../../libs/nasdaq'),

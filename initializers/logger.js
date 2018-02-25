@@ -1,5 +1,5 @@
-require('../environment');
-const { createLogger, format, transports } = require('winston'),
+const config = require('../../config'),
+    { createLogger, format, transports } = require('winston'),
     { combine, timestamp, label, printf } = format,
     myFormat = printf(info => {
         return `${info.timestamp} ${info.level}: ${info.message}`;
@@ -7,7 +7,7 @@ const { createLogger, format, transports } = require('winston'),
 
 
 module.exports = createLogger({
-    level: process.env.LOG_LEVEL,
+    level: config.logger.level,
     format: combine(        
         timestamp(),
         myFormat

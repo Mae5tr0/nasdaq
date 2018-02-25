@@ -1,4 +1,4 @@
-const redis = require('../config/initializers/redis'),
+const redis = require('../initializers/redis'),
     { promisify } = require('util'),
     zaddAsync = promisify(redis.zadd).bind(redis),
     zrangebyscoreAsync = promisify(redis.zrangebyscore).bind(redis);

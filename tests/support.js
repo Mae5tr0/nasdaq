@@ -1,6 +1,6 @@
-require('../../config/environment');
-
-const redis = require('../../config/initializers/redis');
+const config = require('../../config'),
+    redis = require('../../initializers/redis'),
+    server = require('../server');
 
 let app;
 
@@ -15,3 +15,21 @@ afterEach(() => {
 afterAll(() => {
     redis.quit();
 });
+
+let app; 
+
+function startServer() {
+    app = server.listen(config.express.port, config.express.host);
+}
+
+function stopServer() {
+    if (app) {
+        app.close();
+    }
+}
+
+module.exports = {
+    config,
+    startServer,
+    stopServer
+}

@@ -1,6 +1,4 @@
-const express = require('express'),
-    logger = require('../config/initializers/logger'),
-    TimeData = require('../models/timeData'),
+const TimeData = require('../models/timeData'),
     router = require('express').Router();
 
 const SUPPORTED_MARKETS = ['nasdaq'];

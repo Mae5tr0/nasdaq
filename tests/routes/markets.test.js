@@ -1,18 +1,13 @@
-require('../../config/environment');
-
-const request = require('request-promise-native'),
-    server = require('../../server'),
-    redis = require('../../config/initializers/redis'),
+const support = require('../support'),
+    request = require('request-promise-native'),   
     TimeData = require('../../models/timeData');
 
-let app;
-
 beforeAll(() => {
-    app = server.listen(process.env.EXPRESS_PORT || 3000, process.env.EXPRESS_IP || '127.0.0.1');
+    support.startServer();
 }) 
     
 afterAll(() => {
-    app.close();
+    support.stopServer();
 });
 
 describe('Markets', () => {

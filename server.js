@@ -1,10 +1,11 @@
 const express = require('express'),
-    logger = require('./config/initializers/logger'),
+    config = require('./config'),
+    logger = require('./initializers/logger'),
     morgan = require('morgan');
 
 const app = express();
 
-if (process.env.NODE_ENV !== 'test') {
+if (config.environment !== 'test') {
     app.use(morgan('combined'));
 }
 

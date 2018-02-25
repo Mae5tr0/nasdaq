@@ -1,11 +1,11 @@
-require('../environment');
-const logger = require("./logger"),
+const config = require('../../config'),
+    logger = require("./logger"),
     redis = require("redis");
     
 const client = redis.createClient({
-    host: process.env.REDIS_HOST,            
-    port: process.env.REDIS_PORT,
-    db: process.env.REDIS_DB          
+    host: config.redis.host,
+    port: config.redis.port,
+    db: config.redis.db
 });
 
 client.on("error", function errorLogger(err) {

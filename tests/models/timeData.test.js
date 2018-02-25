@@ -26,4 +26,14 @@ describe('Time Data', () => {
         
         expect(receivedData).toEqual([storedData2, storedData3]);
     });
+
+    test('returns specific limit', async () => {
+        await TimeData.create('market', storedData1);
+        await TimeData.create('market', storedData2);
+        await TimeData.create('market', storedData3);
+
+        let receivedData = await TimeData.limit('market', 2);
+        
+        expect(receivedData).toEqual([storedData2, storedData3]);
+    });
 });

@@ -3,8 +3,10 @@ const config = require('../config'),
       Nasdaq = require('../libs/nasdaq'),
       TimeData = require('../models/timeData');
 
+logger.info("Crawler started");
+
 setInterval(async function() {
-    logger.debug("Start fetching data from nasdaq");
+    logger.debug("Fetching data from nasdaq...");
     // truncate time to seconds
     let timestamp = new Date().setMilliseconds(0);
     
@@ -15,6 +17,7 @@ setInterval(async function() {
             value: data.value,
             change: data.change
         });
+        logger.debug("Fetching complete");
     } catch (err) {
         logger.error(err);
     }    

@@ -31,6 +31,6 @@ app.use(function (err, req, res, next) {
     res.json({
         message: "Error"            
     });
-})
+});
 
 module.exports = app;

@@ -1,7 +1,10 @@
 const TimeData = require('../models/timeData'),
-    router = require('express').Router();
+    router = require('express').Router(),
+    NotFoundError = require('../errors/notFoundError');
 
 const SUPPORTED_MARKETS = ['nasdaq'];
+
+const wrap = fn => (...args) => fn(...args).catch(args[2])
 
 router.get('/markets', function (req, res) {    
     res.json({
@@ -9,10 +12,13 @@ router.get('/markets', function (req, res) {
     });
 });
 
-router.get('/markets/:id', async function (req, res) {
-    //TODO 404 if not support market
-    let data = await TimeData.find(req.params.id, {from: req.params.from, to: req.params.to});
+router.get('/markets/:id', wrap(async function (req, res) {
+    if (!SUPPORTED_MARKETS.includes(req.params.id)) {
+        throw new NotFoundError('Invalid market');
+    }
+    
+    let data = await TimeData.find(req.params.id, {from: req.query.from, to: req.query.to});
     res.json({data: data});
-});
+}));
 
 module.exports = router;

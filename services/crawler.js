@@ -8,10 +8,14 @@ setInterval(async function() {
     //TODO: we need use timestamp accordinly to seconds
     let timestamp = Date.now();
     
-    let data = await Nasdaq.scrape();
-    await TimeData.create('nasdaq', {
-        timestamp: timestamp,
-        value: data.value,
-        change: data.change
-    });
+    try {
+        let data = await Nasdaq.scrape();
+        await TimeData.create('nasdaq', {
+            timestamp: timestamp,
+            value: data.value,
+            change: data.change
+        });
+    } catch (err) {
+        logger.error(err);
+    }    
 }, config.service.crawler.timeout * 1000);

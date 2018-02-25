@@ -1,5 +1,5 @@
-require('../support');
-const nock = require('nock'),
+const support = require('../support'),
+    nock = require('nock'),
     Nasdaq = require('../../libs/nasdaq');
 
 describe('Nasdaq crawler', () => {

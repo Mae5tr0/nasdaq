@@ -1,4 +1,4 @@
-const config = require('../../config'),
+const config = require('../config'),
     { createLogger, format, transports } = require('winston'),
     { combine, timestamp, label, printf } = format,
     myFormat = printf(info => {

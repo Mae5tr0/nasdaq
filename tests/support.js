@@ -1,11 +1,10 @@
-const config = require('../../config'),
-    redis = require('../../initializers/redis'),
-    server = require('../server');
-
-let app;
+const config = require('../config'),
+    redis = require('../initializers/redis'),
+    server = require('../server'),
+    request = require('request-promise-native');
 
 beforeAll(() => {
-    redis.flushDB();
+    redis.flushdb();
 });
 
 afterEach(() => {
@@ -28,8 +27,14 @@ function stopServer() {
     }
 }
 
+function getApi(api) {
+    return request(`http://${config.express.host}:${config.express.port}/${api}`)
+        .then(data => JSON.parse(data));
+}
+
 module.exports = {
     config,
     startServer,
-    stopServer
+    stopServer,
+    getApi
 }

@@ -1,4 +1,4 @@
-const config = require('../../config'),
+const config = require('../config'),
     logger = require("./logger"),
     redis = require("redis");
     

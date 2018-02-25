@@ -13,7 +13,7 @@ class Nasdaq {
     /**
      * Load and parse nasdaq index page for extracting market activity
      * 
-     * @return {number} The x value.
+     * @return {Promise}
      */
     static scrape() {
         return request('http://www.nasdaq.com')
@@ -27,7 +27,7 @@ class Nasdaq {
      * Parse html string and extact nasdaq market activity: value and change net
      *
      * @param {string} body - nasdaq index page
-     * @return {Object} The x value.
+     * @return {Object} parsed value
      */
     static parse(body) {        
         let $ = cheerio.load(body);

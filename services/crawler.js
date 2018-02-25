@@ -5,8 +5,8 @@ const config = require('../config'),
 
 setInterval(async function() {
     logger.debug("Start fetching data from nasdaq");
-    //TODO: we need use timestamp accordinly to seconds
-    let timestamp = Date.now();
+    // truncate time to seconds
+    let timestamp = new Date().setMilliseconds(0);
     
     try {
         let data = await Nasdaq.scrape();

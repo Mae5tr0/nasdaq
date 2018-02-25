@@ -1,13 +1,14 @@
 const redis = require('../initializers/redis'),
     { promisify } = require('util'),
     zaddAsync = promisify(redis.zadd).bind(redis),
-    zrangebyscoreAsync = promisify(redis.zrangebyscore).bind(redis);
-
+    zrangebyscoreAsync = promisify(redis.zrangebyscore).bind(redis),
+    zrangeAsync = promisify(redis.zrange).bind(redis);
+    
 /** 
- * Class representing a time data. Prove easy way to store and find values
+ * Class representing a time data. Provide easy way to store and find values
  * @class
  * @example
- * TimeData.create('market', {timestamp: 1519491287150, value: 1000, change: 10}); // store data to db
+ * await TimeData.create('market', {timestamp: 1519491287150, value: 1000, change: 10}); // store data to db
  * let data = await TimeData.find('market', {from: 1519491287150, to: 1519491297150}); // load data between from and to
  */
 module.exports = class TimeData {
@@ -21,7 +22,7 @@ module.exports = class TimeData {
      * @param {number} values.change - change net for market   
      * @return {Promise} 
      */
-    static create(key, values = {}) {
+    static create(key, values = {}) {        
         return zaddAsync(key, values.timestamp, `${values.timestamp}:${values.value}:${values.change}`);  
     }
 
@@ -38,17 +39,35 @@ module.exports = class TimeData {
         let from = options.from || 0;
         let to = options.to || Number.MAX_SAFE_INTEGER;
 
-        return zrangebyscoreAsync(key, from, to)
-            .then(data => {
-                return data.map(rawEntry => {
-                    let values = rawEntry.split(':');                    
+        return zrangebyscoreAsync(key, from, to).then(this.parseResponse);
+    }
 
-                    return {
-                        timestamp: parseInt(values[0]), 
-                        value: parseFloat(values[1]),
-                        change: parseFloat(values[2])    
-                    };          
-                });
-            });
+    /**
+     * Return n last values
+     *
+     * @param {string} key - market name
+     * @param {number} n - entries count
+     * @return {Promise} 
+     */
+    static limit(key, n = 50) {
+        return zrangeAsync(key, -n, -1).then(this.parseResponse);
+    }
+
+    /**
+     * Parse response from redis
+     *
+     * @param {Object} data - raw response from redis
+     * @return {Object} parse response
+     */
+    static parseResponse(data) {
+        return data.map(rawEntry => {
+            let values = rawEntry.split(':');                    
+
+            return {
+                timestamp: parseInt(values[0]), 
+                value: parseFloat(values[1]),
+                change: parseFloat(values[2])    
+            };          
+        });
     }
 };

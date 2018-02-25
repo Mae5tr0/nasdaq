@@ -1,6 +1,7 @@
 const support = require('../support'),
     request = require('request-promise-native'),   
     TimeData = require('../../models/timeData'),
+    config = require('../../config'),
     { getApi } = support;
 
 beforeAll(() => {
@@ -10,6 +11,10 @@ beforeAll(() => {
 afterAll(() => {
     support.stopServer();
 });
+
+function timestampBack(i) {
+    return (Date.now() - config.service.crawler.timeout * 1000 * i);
+}
 
 describe('Markets', () => {
     describe('/markets', () => {
@@ -21,8 +26,8 @@ describe('Markets', () => {
     
     describe('/markets/:id', () => {
         test('return stored values', async () => {
-            let storedData1 = {value: 100, change: 1, timestamp: 10};
-            let storedData2 = {value: 200, change: 2, timestamp: 20};
+            let storedData1 = {value: 100, change: 1, timestamp: timestampBack(1)};
+            let storedData2 = {value: 200, change: 2, timestamp: timestampBack(0)};
     
             await TimeData.create('nasdaq', storedData1);                    
             await TimeData.create('nasdaq', storedData2);                                       
@@ -46,12 +51,22 @@ describe('Markets', () => {
             expect(data).toEqual({data:[storedData2, storedData3]});
         });
 
-        test('return last 20 values if from and to not specified', async () => {               
-            // let data = await getApi('markets/nasdaq');
-            // expect(data).toEqual({data:[storedData2, storedData3]});
+        test('return last n values if from and to not specified', async () => {
+            let data = [];
+            
+            for (let i=40;i>0;i--) {
+                let storedData = {value: i, change: 1, timestamp: timestampBack(i)};
+                await TimeData.create('nasdaq', storedData);
+                data.push(storedData);                    
+            }
+
+            let receivedData = await getApi('markets/nasdaq');
+            
+            expect(receivedData.data.length).toBe(30);
+            expect(receivedData).toEqual({data: data.slice(-30)});
         });
 
-        test('returns 404 is market not supported', async () => {
+        test('returns 404 if market not supported', async () => {
             try {
                 await getApi('markets/unknown');
             } catch (err) {
